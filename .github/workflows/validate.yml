@@ -1,0 +1,21 @@
+# Gate every PR. INERT until the repo is hosted on GitHub — the same script
+# (ci/run_gates.py) is what the local publisher bot runs, so behaviour is
+# identical everywhere.
+name: validate
+on:
+  pull_request:
+    branches: [main]
+jobs:
+  gates:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install pinned validator
+        run: pip install -r ci/requirements.txt
+      - name: Run gates against the PR base
+        run: python ci/run_gates.py --base "origin/${{ github.base_ref }}"

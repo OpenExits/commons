@@ -1,0 +1,8 @@
+{
+  "duplicateRadiusM": 50,
+  "sensitiveRadiusM": 500,
+  "maxNewSitesPerChange": 10,
+  "tripwireMinShingleMatches": 3,
+  "maxRouteKm": 50,
+  "routeEndpointMaxKm": 10
+}

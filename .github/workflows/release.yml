@@ -1,0 +1,38 @@
+# Tagged data releases (data/YYYY.MM.N). INERT until hosted.
+# Zenodo archives GitHub releases automatically once the repo is linked on
+# zenodo.org (no step needed here). Software Heritage crawls public repos.
+name: release
+on:
+  push:
+    tags: ["data/*"]
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r ci/requirements.txt
+      - name: Final gate pass
+        run: python ci/run_gates.py --check-build-fresh
+      - name: Create GitHub release with build artifacts
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            build/sites.geojson
+            build/features.geojson
+            build/routes.geojson
+            build/sites.csv
+            build/media-index.json
+      - name: OpenTimestamps proof of the release commit
+        run: |
+          pip install opentimestamps-client
+          git rev-parse HEAD > release-commit.txt
+          ots stamp release-commit.txt
+          # the .ots proof is attached to the release on the next line
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: release-commit.txt.ots

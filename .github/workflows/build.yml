@@ -1,0 +1,26 @@
+# Regenerate build/ on merge to main. INERT until hosted.
+name: build
+on:
+  push:
+    branches: [main]
+    paths: ["sites/**", "routes/**", "scripts/**"]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r ci/requirements.txt
+      - name: Rebuild artifacts
+        run: python scripts/build_artifacts.py
+      - name: Verify determinism and freshness
+        run: python ci/run_gates.py --changed --check-build-fresh
+      - name: Commit regenerated build
+        run: |
+          git config user.name "openexit-bot"
+          git config user.email "bot@openexit.invalid"  # set real address before launch
+          git add build/
+          git diff --cached --quiet || git commit -m "chore(build): regenerate"
+          git push

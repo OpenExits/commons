@@ -1,0 +1,20 @@
+# Push replicas to Codeberg + GitLab. INERT until hosted and the MIRROR_*
+# secrets exist (each: a push-capable token for an empty mirror repo).
+name: mirror
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Mirror to Codeberg
+        if: ${{ vars.MIRROR_CODEBERG_URL != '' }}
+        run: git push --mirror "https://${{ secrets.MIRROR_CODEBERG_TOKEN }}@${{ vars.MIRROR_CODEBERG_URL }}"
+      - name: Mirror to GitLab
+        if: ${{ vars.MIRROR_GITLAB_URL != '' }}
+        run: git push --mirror "https://${{ secrets.MIRROR_GITLAB_TOKEN }}@${{ vars.MIRROR_GITLAB_URL }}"
