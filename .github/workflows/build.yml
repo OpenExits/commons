@@ -1,9 +1,15 @@
-# Regenerate build/ on merge to main. INERT until hosted.
+# Regenerate build/ on merge to main.
+#
+# ci/** is in the path filter deliberately: the validator pin lives in
+# ci/requirements.txt, and a change to what CI installs must re-prove that the
+# build still runs. Leaving it out meant the first pin fix pushed green
+# without ever being exercised.
 name: build
 on:
   push:
     branches: [main]
-    paths: ["sites/**", "routes/**", "scripts/**"]
+    paths: ["sites/**", "routes/**", "scripts/**", "ci/**"]
+  workflow_dispatch: {}
 jobs:
   build:
     runs-on: ubuntu-latest
