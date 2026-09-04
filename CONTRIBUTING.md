@@ -1,4 +1,4 @@
-# Contributing to the OpenExit Commons
+# Contributing to the OpenExits Commons
 
 > ## ⚠ Before anything else: sensitive exits
 > **Do not submit access-restricted or landowner-sensitive exits.** A pull request or
@@ -12,31 +12,39 @@ Every contribution route requires, and records, agreement to these terms:
 
 > I certify that I have the right to contribute this material and that it is not copied
 > from a third-party database without permission. I keep my rights in my contribution,
-> and I grant the OpenExit association a worldwide, non-exclusive, irrevocable licence to
-> publish it as part of the OpenExit database under ODbL 1.0 (contents under DbCL 1.0),
-> or under another free and open licence approved by a two-thirds vote of active
-> contributors.
+> and I grant the OpenExits project — and the non-profit association that will be
+> constituted to steward it, **which succeeds to these rights automatically upon its
+> creation** — a worldwide, non-exclusive, irrevocable licence to publish it as part of
+> the OpenExits database under ODbL 1.0 (contents under DbCL 1.0), or under another free
+> and open licence approved by a two-thirds vote of active contributors.
 
 *Terms version: `contributor-terms-2026-08`.*
 
 You keep ownership of what you contribute — you lend it to the commons, you never
-surrender it. The association holds only the licence grants and, as database maker, the
-database rights in the compiled commons (the OpenStreetMap model). This is what makes
-takedowns surgical rather than existential: one contribution can be removed without
-poisoning the whole.
+surrender it. The project (later the association) holds only the licence grants and, as
+database maker, the database rights in the compiled commons (the OpenStreetMap model).
+This is what makes takedowns surgical rather than existential: one contribution can be
+removed without poisoning the whole.
+
+**Why the terms name a future association.** OpenExits is stewarded by its founder today
+and will be handed to an independent non-profit association once adoption justifies the
+structure — see [GOVERNANCE.md](GOVERNANCE.md). Because you grant your licence to that
+future association as well as to the project, the handover needs nothing from you: no
+contributor is contacted, no licence changes, and your credit stays attached to your
+contribution permanently.
 
 Photographs and other media additionally carry a per-file licence: **CC-BY-SA 4.0**.
 
 ## Four ways to contribute
 
-1. **The panel** *(recommended — coming with the OpenExit website)*: drop a pin on the
+1. **The panel** *(recommended — coming with the OpenExits website)*: drop a pin on the
    map, answer a short wizard, done. Machine-validated instantly, human-reviewed before
    publication, converted to standard JSON and committed with your credit by the bot.
 2. **Issue form**: open a [new-site issue](.github/ISSUE_TEMPLATE/new-site.yml)-based
    issue — structured fields, no git knowledge needed.
 3. **Pull request** (for the technical): fork, add or edit one file under
    `sites/<country>/<slug>.json` conforming to the
-   [OpenExit Specification](https://github.com/openexit/specification), and open a PR.
+   [OpenExits Specification](https://github.com/openexits/specification), and open a PR.
    Run `python ci/run_gates.py --changed sites/<country>/<slug>.json` locally first —
    CI runs exactly that script.
 4. **Bulk import by a platform** *(coming soon — specified, not yet built)*: a documented
@@ -50,7 +58,7 @@ any change that modifies existing provenance history.
 
 ## What CI enforces (nothing merges without it)
 
-Schema + normative rules (`openexit-validator`), site-level duplicate radius (50 m;
+Schema + normative rules (`openexits-validator`), site-level duplicate radius (50 m;
 features within one site exempt), provenance append-only, sensitive-zone check, the
 bulk-submission tripwire (volume + textual similarity), route geometry sanity, and a
 deterministic build. Provenance is **system-generated** — hand-written provenance is

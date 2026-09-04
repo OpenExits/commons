@@ -9,7 +9,7 @@ Usage:
     python ci/run_gates.py --base origin/main             # changed = git diff vs ref
     python ci/run_gates.py --check-build-fresh            # also demand committed build/ is current
 
-Gate order: schema+rules (openexit-validator, incl. OE-R14 seasonal), duplicate
+Gate order: schema+rules (openexits-validator, incl. OE-R14 seasonal), duplicate
 radius (OE-R11), provenance append-only (OE-R07), sensitive radius, bulk
 tripwire, routes, deterministic build. Prints PASS/FAIL per check, exits
 non-zero on any FAIL.
@@ -23,8 +23,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from openexit_validator import validate_file  # noqa: E402
-from openexit_validator.report import Report  # noqa: E402
+from openexits_validator import validate_file  # noqa: E402
+from openexits_validator.report import Report  # noqa: E402
 
 import gate_bulk_tripwire  # noqa: E402
 import gate_deterministic_build  # noqa: E402
@@ -83,9 +83,9 @@ def main() -> int:
 
     ctx = GateContext(repo=repo, changed=changed, base_ref=args.base, config=load_config(repo))
 
-    print(f"== OpenExit Commons gates == ({len(changed)} changed site file(s))")
+    print(f"== OpenExits Commons gates == ({len(changed)} changed site file(s))")
 
-    print("\n1. Schema + normative rules (openexit-validator)")
+    print("\n1. Schema + normative rules (openexits-validator)")
     for path in changed:
         check(f"validate {ctx.path_id(path)}", validate_file(path))
     if not changed:

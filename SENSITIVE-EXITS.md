@@ -5,7 +5,7 @@ permanently, even if rejected.** Closed pull requests remain publicly readable a
 commits from deleted branches stay reachable; only the hosting platform's support team
 can truly remove them. So this policy lives **before** submission, not in review.
 
-## Vocabulary (from the OpenExit Specification, rule OE-R08)
+## Vocabulary (from the OpenExits Specification, rule OE-R08)
 
 - `public` — the site is openly known and publishable. **The only level this Commons
   ever holds.**

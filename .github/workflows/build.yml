@@ -19,8 +19,8 @@ jobs:
         run: python ci/run_gates.py --changed --check-build-fresh
       - name: Commit regenerated build
         run: |
-          git config user.name "openexit-bot"
-          git config user.email "bot@openexit.invalid"  # set real address before launch
+          git config user.name "openexits-bot"
+          git config user.email "bot@openexits.invalid"  # set real address before launch
           git add build/
           git diff --cached --quiet || git commit -m "chore(build): regenerate"
           git push

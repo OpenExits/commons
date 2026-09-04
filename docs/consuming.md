@@ -1,4 +1,4 @@
-# Consuming the OpenExit Commons
+# Consuming the OpenExits Commons
 
 How to get the data into your app, and what the licence asks of you — in plain terms.
 
@@ -12,7 +12,7 @@ Zero-infrastructure read access via jsDelivr (works on files well past 10 MB), o
 repository is public:
 
 ```
-https://cdn.jsdelivr.net/gh/openexit/commons@data/2026.09.1/build/sites.geojson
+https://cdn.jsdelivr.net/gh/openexits/commons@data/2026.09.1/build/sites.geojson
 ```
 
 Or clone for bulk use: every clone is a full replica of the database and its history.
@@ -28,7 +28,7 @@ Or clone for bulk use: every clone is a full replica of the database and its his
 | `media-index.json` | sha256-addressed media references with per-file licence and credit — binaries are hosted separately, never in git |
 
 Full per-site documents live in `sites/<country>/<slug>.json` and conform to the
-[OpenExit Specification](https://github.com/openexit/specification); coordinates are WGS84
+[OpenExits Specification](https://github.com/openexits/specification); coordinates are WGS84
 and GeoJSON order is `[lon, lat]`.
 
 ## ODbL, in practice
@@ -42,12 +42,12 @@ The database is ODbL 1.0 (contents DbCL 1.0). Three integration patterns:
 2. **Derivative database** — you import the commons into your own database and modify or
    merge it. Share-alike applies: that derived *database* must be available under ODbL.
 3. **Collective database** *(the firewall pattern)* — you keep a cleanly separated private
-   dataset **alongside** the fetched OpenExit dataset, without merging rows. This is a
+   dataset **alongside** the fetched OpenExits dataset, without merging rows. This is a
    collective database: your private data is **not** contaminated. The separation is the
    firewall. Link records across the boundary with the standard's `sameAs` field instead
    of merging.
 
-**Attribution, everywhere the data appears:** `© OpenExit contributors, ODbL` with a link
+**Attribution, everywhere the data appears:** `© OpenExits contributors, ODbL` with a link
 to the licence. On a map, the attribution control is the natural place.
 
 ## Obligations beyond the licence
@@ -62,7 +62,7 @@ to the licence. On a map, the attribution control is the natural place.
 
 ## Identity when merging
 
-`id` is the stable OpenExit identifier (ULID/UUID, never reused). Your own record ids
+`id` is the stable OpenExits identifier (ULID/UUID, never reused). Your own record ids
 belong in your database; cross-reference through `sameAs`
 (`{"system": "your-app", "id": "…"}`) so both sides can resolve each other without
 name-and-proximity guessing.

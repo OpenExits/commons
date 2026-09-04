@@ -13,7 +13,7 @@ import gate_routes
 import gate_sensitive_radius
 from gate_lib import GateContext
 from fingerprint_corpus import fingerprint_paths
-from openexit_validator.normalize import write_json
+from openexits_validator.normalize import write_json
 
 
 def ctx_for(repo: Path, changed_ids: list[str], base_ref: str | None = None) -> GateContext:
@@ -50,7 +50,7 @@ def test_two_exits_in_one_site_30m_apart_pass(repo: Path):
 def test_sameas_link_allows_close_sites(repo: Path):
     a = make_site("Site Lié A", 45.900000, 6.500000)
     b = make_site("Site Lié B", 45.900270, 6.500000)
-    b["sameAs"] = [{"system": "openexit", "id": a["id"]}]
+    b["sameAs"] = [{"system": "openexits", "id": a["id"]}]
     make_repo(repo, {"fr/lie-a": a, "fr/lie-b": b})
     assert gate_duplicate_radius.check(ctx_for(repo, ["fr/lie-b"])).ok
 

@@ -10,8 +10,8 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-from openexit_validator.normalize import haversine_m
-from openexit_validator.report import Report
+from openexits_validator.normalize import haversine_m
+from openexits_validator.report import Report
 
 from gate_lib import GateContext, primary_position
 

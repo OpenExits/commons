@@ -9,7 +9,7 @@ from pathlib import Path
 from conftest import make_repo, make_site
 
 from build_artifacts import build, read_gpx_track
-from openexit_validator.normalize import canonical_dumps
+from openexits_validator.normalize import canonical_dumps
 
 GPX = """<?xml version='1.0' encoding='utf-8'?>
 <gpx version="1.1" creator="test" xmlns="http://www.topografix.com/GPX/1/1">
@@ -66,7 +66,7 @@ def test_geojson_lonlat_order_and_roundtrip(repo: Path):
     build(repo, out)
 
     sites = json.loads((out / "sites.geojson").read_text(encoding="utf-8"))
-    assert sites["attribution"].startswith("© OpenExit contributors")
+    assert sites["attribution"].startswith("© OpenExits contributors")
     feat = sites["features"][0]
     lon, lat = feat["geometry"]["coordinates"]
     assert 6.4 < lon < 6.6 and 45.8 < lat < 46.0, f"lon/lat transposed? got [{lon}, {lat}]"

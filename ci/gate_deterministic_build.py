@@ -13,7 +13,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-from openexit_validator.report import Report
+from openexits_validator.report import Report
 
 from gate_lib import GateContext
 

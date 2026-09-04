@@ -17,7 +17,7 @@ import re
 import sys
 from pathlib import Path
 
-from openexit_validator.normalize import write_json
+from openexits_validator.normalize import write_json
 
 SHINGLE_WORDS = 8
 

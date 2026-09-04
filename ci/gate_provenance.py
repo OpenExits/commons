@@ -12,7 +12,7 @@ from __future__ import annotations
 
 import json
 
-from openexit_validator.report import Report
+from openexits_validator.report import Report
 
 from gate_lib import GateContext
 

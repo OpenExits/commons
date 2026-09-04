@@ -15,7 +15,7 @@ COMMONS = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(COMMONS / "ci"))
 sys.path.insert(0, str(COMMONS / "scripts"))
 
-from openexit_validator.normalize import write_json  # noqa: E402
+from openexits_validator.normalize import write_json  # noqa: E402
 
 CONFIG = {
     "duplicateRadiusM": 50,

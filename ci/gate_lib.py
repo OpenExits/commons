@@ -5,7 +5,7 @@ import subprocess
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from openexit_validator.normalize import read_json
+from openexits_validator.normalize import read_json
 
 
 @dataclass

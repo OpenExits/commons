@@ -18,9 +18,9 @@ import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
-from openexit_validator.normalize import read_json, write_json
+from openexits_validator.normalize import read_json, write_json
 
-ATTRIBUTION = "© OpenExit contributors, ODbL 1.0 — https://opendatacommons.org/licenses/odbl/1-0/"
+ATTRIBUTION = "© OpenExits contributors, ODbL 1.0 — https://opendatacommons.org/licenses/odbl/1-0/"
 
 CSV_COLUMNS = [
     "id", "path", "name", "country", "region", "city", "status", "access",

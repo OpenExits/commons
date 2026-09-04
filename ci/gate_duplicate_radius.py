@@ -1,14 +1,14 @@
 """Rule OE-R11 — site-level duplicate detection.
 
 A changed/new SITE within duplicateRadiusM (50 m) of any other site fails
-unless the two are explicitly linked by an openexit sameAs entry or listed in
+unless the two are explicitly linked by an openexits sameAs entry or listed in
 ci/duplicate-overrides.json. Features WITHIN one site are exempt by design —
 that is the point of the Site→Features model.
 """
 from __future__ import annotations
 
-from openexit_validator.normalize import haversine_m, read_json
-from openexit_validator.report import Report
+from openexits_validator.normalize import haversine_m, read_json
+from openexits_validator.report import Report
 
 from gate_lib import GateContext, primary_position
 
@@ -55,6 +55,6 @@ def _linked(a: dict, b: dict) -> bool:
     def ids(doc: dict) -> set[str]:
         return {
             e.get("id") for e in doc.get("sameAs", [])
-            if isinstance(e, dict) and e.get("system") == "openexit"
+            if isinstance(e, dict) and e.get("system") == "openexits"
         }
     return b.get("id") in ids(a) or a.get("id") in ids(b)

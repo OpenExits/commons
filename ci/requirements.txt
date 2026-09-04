@@ -1,7 +1,7 @@
 # The gate toolchain is versioned data: pin the validator to a specification
-# release tag. INERT FORM until the openexit org exists — local development
+# release tag. INERT FORM until the openexits org exists — local development
 # installs the editable package instead:
 #   pip install -e ../specification/tools
 #
-# openexit-validator @ git+https://github.com/openexit/specification@v2.0.0#subdirectory=tools
+# openexits-validator @ git+https://github.com/openexits/specification@v2.0.0#subdirectory=tools
 jsonschema>=4.21
