@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "2.0",
+  "id": "not-a-ulid-at-all",
+  "name": "Invented Gate-Proof Site",
+  "country": "ZZ",
+  "status": "seasonal",
+  "access": "legal",
+  "sensitivity": "public",
+  "provenance": [],
+  "updatedAt": "2026-08-27T00:00:00Z",
+  "features": [
+    {
+      "role": "exit",
+      "name": "Invented Exit",
+      "position": { "lat": 999.0, "lon": 7.0, "elevationM": 1000, "precisionM": 10 },
+      "objectType": "earth",
+      "exitDirectionDeg": "north-west",
+      "measurements": {
+        "rockdrop": { "valueM": 200 },
+        "heightAgl": { "valueM": 900 }
+      }
+    }
+  ]
+}
