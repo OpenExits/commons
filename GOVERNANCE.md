@@ -43,20 +43,75 @@ feature: contributing stays frictionless, enclosure stays impossible.
 The database is published **only** under ODbL 1.0 (contents DbCL 1.0). Relicensing requires a
 two-thirds vote of active contributors — not a board decision, and not a founder decision.
 
+## What review is — and what it is not
+
+**This section governs every role below. Read it first.**
+
+Review in OpenExits is a **conformance check, not a verification**. A reviewer confirms that
+a submission is well-formed, internally consistent, plausibly offered in good faith, and not
+obviously sensitive. A reviewer does **not** confirm that a site is safe, that a measurement
+is accurate, that an access is lawful, or that anyone should jump it.
+
+Nobody acting for OpenExits visits sites, measures anything, or checks a record against
+reality. **That verification is the jumper's own, and it is not delegable.** A published
+record means "this submission conforms to the standard and passed the gates" and carries no
+further assertion of any kind.
+
+Approving a submission is therefore an administrative act, not an endorsement, a
+recommendation, a safety assessment, or advice. Every consumer of this data is separately
+obliged to surface that it is unverified reference information (specification rule OE-R09).
+
+Nothing in this project — no role, no approval, no badge, no gate — should be read as anyone
+telling anyone else that a jump is safe.
+
 ## Roles
 
-- **Contributor** — anyone who has had a contribution published. Contributors listed in
-  provenance within the last 2 years are **active contributors** for voting purposes.
-- **Moderator** — reviews submissions before publication (approve / edit-then-approve /
-  reject / request changes). Appointed by the maintainers; removed by the maintainers, or by
-  the bureau for cause once one exists.
+The panel implements three roles (`user`, `moderator`, `admin`); the project additionally
+recognises two governance roles that exist outside the software. They are listed together
+here so that no role anyone actually holds is left undefined.
+
+| Where it lives | Role | Scope |
+|---|---|---|
+| panel | `user` | Submit sites and corrections; edit and withdraw one's own submissions |
+| panel | `moderator` | Everything a user can do, plus review the queue |
+| panel | `admin` | Everything a moderator can do, plus appoint moderators and administer accounts |
+| project | maintainer | Repository merge rights, gate configuration, releases |
+| association (Phase 2) | bureau | Administers the association |
+
+- **Contributor** — anyone who has had a contribution published. Contributors named in
+  provenance within the last 2 years are **active contributors** for voting purposes. Being a
+  contributor confers no responsibility for anyone else's submission.
+- **Moderator** (panel role `moderator`) — performs the conformance check defined above:
+  approve, edit-then-approve, reject, or request changes. Appointed by an admin or the
+  maintainers; removed the same way, or by the bureau for cause once one exists. A moderator
+  is **not** a verifier, an inspector, or a guarantor, and is not expected to have local
+  knowledge of any site they review.
+- **Admin** (panel role `admin`) — a moderator who can additionally appoint moderators and
+  administer accounts. **The admin role carries no additional assertion about data.** An
+  admin who approves a submission is doing exactly what a moderator does and is scoped by the
+  same paragraph above. In Phase 1 the founder holds this role by necessity, being the only
+  account there is.
 - **Maintainer** — merge rights on the repositories, gate configuration, releases. Becoming
   one: sustained quality contributions + nomination by an existing maintainer + no veto from
   the others within 14 days. Target: **at least three maintainers in different countries**
   before public launch. In Phase 1 they are the project's maintainers; at Phase 2 they are
-  the association's founding members and bureau.
+  the association's founding members and bureau. Maintaining the gates is not a warranty that
+  the gates catch everything.
 - **Bureau** (président, trésorier, …) — Phase 2 only; elected per the statutes; administers
   the association, not the data.
+
+## Standing behind the people who do the work
+
+Moderators, admins and maintainers act **on behalf of the project**, not personally, when
+performing the duties described above. Once the association exists it is the association —
+not any individual — that publishes the database, and the project intends to carry civil
+liability insurance for those acting in these roles. Until then the founder stewards the
+project personally, which is a further reason to constitute the association before recruiting
+moderators beyond the founder.
+
+No volunteer is asked to accept personal exposure for reviewing a submission according to
+these rules. Anyone uncomfortable with a submission may decline to review it and pass it on,
+with no explanation owed.
 
 ## How changes are decided
 
