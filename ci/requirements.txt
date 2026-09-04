@@ -1,7 +1,9 @@
-# The gate toolchain is versioned data: pin the validator to a specification
-# release tag. INERT FORM until the openexits org exists — local development
-# installs the editable package instead:
-#   pip install -e ../specification/tools
+# The gate toolchain is versioned data: the validator is pinned to a
+# specification release tag, so a gate result is reproducible for as long as
+# that tag exists. Never track main here — a spec change would silently alter
+# what CI accepts.
 #
-# openexits-validator @ git+https://github.com/openexits/specification@v2.0.0#subdirectory=tools
+# Local development installs the editable package instead:
+#   pip install -e ../specification/tools
+openexits-validator @ git+https://github.com/OpenExits/specification@v2.0.0#subdirectory=tools
 jsonschema>=4.21
