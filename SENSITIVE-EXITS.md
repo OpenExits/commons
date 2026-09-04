@@ -36,8 +36,11 @@ submission wizard opens. These are tripwires, not the policy — the policy is y
 
 ## If something slips through — the scrub fast-path
 
-1. **Immediately** notify a maintainer (or open an issue titled "scrub request" with NO
-   details of the site in the issue body — name the PR/commit only).
+1. **Immediately** email **security@openexits.org** — the private channel, so the report
+   itself does not publish what you are trying to unpublish. Name the file, PR or commit
+   only; do not describe the site. If email is not available to you, open an issue titled
+   "scrub request" with NO details of the site in the body — the PR/commit reference and
+   nothing else. See [SECURITY.md](SECURITY.md).
 2. A maintainer removes the record with a revert commit and, where history rewriting is
    warranted, contacts the hosting platform's support to purge unreachable commits and
    cached views (on GitHub: support ticket; closed-PR bodies can also be edited/redacted
