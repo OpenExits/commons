@@ -13,6 +13,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # The job commits regenerated artifacts back, so it needs write on contents.
+    # GITHUB_TOKEN defaults to read-only; declaring the single scope needed here
+    # is preferable to switching the whole org to read-write by default.
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -26,7 +31,7 @@ jobs:
       - name: Commit regenerated build
         run: |
           git config user.name "openexits-bot"
-          git config user.email "bot@openexits.invalid"  # set real address before launch
+          git config user.email "bot@openexits.org"
           git add build/
           git diff --cached --quiet || git commit -m "chore(build): regenerate"
           git push
