@@ -27,7 +27,7 @@ def run_audit(repo: Path, *extra: str) -> subprocess.CompletedProcess:
 
 def _repo(tmp_path: Path) -> Path:
     repo = tmp_path / "repo"
-    (repo / "sites").mkdir(parents=True)
+    (repo / "objects").mkdir(parents=True)
     (repo / "README.md").write_text("clean synthetic readme\n", encoding="utf-8")
     _git(repo, "init", "-q")
     _git(repo, "add", "-A")
@@ -49,7 +49,7 @@ def test_clean_repo_passes(tmp_path: Path):
 
 def test_leak_in_working_tree_fails(tmp_path: Path):
     repo = _repo(tmp_path)
-    (repo / "sites" / "leak.json").write_text(
+    (repo / "objects" / "leak.json").write_text(
         '{"name": "' + LEAK + '"}', encoding="utf-8")
     r = run_audit(repo, "--strings", str(_strings_file(tmp_path)))
     assert r.returncode == 1
@@ -73,12 +73,12 @@ def test_leak_only_in_history_fails(tmp_path: Path):
     assert "history:" in r.stdout
 
 
-def test_unexpected_site_records_fail(tmp_path: Path):
+def test_unexpected_object_records_fail(tmp_path: Path):
     repo = _repo(tmp_path)
-    (repo / "sites" / "fr").mkdir()
-    (repo / "sites" / "fr" / "x.json").write_text("{}", encoding="utf-8")
+    (repo / "objects" / "fr").mkdir()
+    (repo / "objects" / "fr" / "x.json").write_text("{}", encoding="utf-8")
     assert run_audit(repo).returncode == 1
-    assert run_audit(repo, "--allow-sites", "1").returncode == 0
+    assert run_audit(repo, "--allow-objects", "1").returncode == 0
 
 
 def test_no_strings_file_is_not_a_clearance(tmp_path: Path):

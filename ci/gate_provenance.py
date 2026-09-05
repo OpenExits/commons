@@ -2,7 +2,7 @@
 
 Compared against the base git ref: existing provenance entries must be
 byte-identical and in the same order (a prefix of the new array), and any
-change to a site file must APPEND at least one entry (corrections carry their
+change to an object file must APPEND at least one entry (corrections carry their
 own provenance; prior credit is never erased). Without this, history can be
 rewritten to launder the origin of a record.
 
@@ -31,7 +31,7 @@ def check(ctx: GateContext) -> Report:
             old_doc = json.loads(old_text)
             new_doc = ctx.load(path)
         except Exception as exc:
-            r.fail("OE-R07", f"cannot compare provenance for '{pid}': {exc}", f"sites/{pid}")
+            r.fail("OE-R07", f"cannot compare provenance for '{pid}': {exc}", f"objects/{pid}")
             continue
         old = old_doc.get("provenance") or []
         new = new_doc.get("provenance") or []
@@ -40,7 +40,7 @@ def check(ctx: GateContext) -> Report:
                 "OE-R07",
                 f"'{pid}' changed without appending a provenance entry "
                 f"({len(old)} -> {len(new)}); every correction appends, nothing is erased",
-                f"sites/{pid}/provenance",
+                f"objects/{pid}/provenance",
             )
         for i, entry in enumerate(old):
             if i >= len(new) or _canon(new[i]) != _canon(entry):
@@ -48,7 +48,7 @@ def check(ctx: GateContext) -> Report:
                     "OE-R07",
                     f"'{pid}' modifies or reorders existing provenance entry {i} — "
                     f"provenance is append-only",
-                    f"sites/{pid}/provenance/{i}",
+                    f"objects/{pid}/provenance/{i}",
                 )
                 break
     return r

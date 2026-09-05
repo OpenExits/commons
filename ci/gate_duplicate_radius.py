@@ -1,9 +1,9 @@
-"""Rule OE-R11 — site-level duplicate detection.
+"""Rule OE-R11 — object-level duplicate detection.
 
-A changed/new SITE within duplicateRadiusM (50 m) of any other site fails
+A changed/new OBJECT within duplicateRadiusM (50 m) of any other object fails
 unless the two are explicitly linked by an openexits sameAs entry or listed in
-ci/duplicate-overrides.json. Features WITHIN one site are exempt by design —
-that is the point of the Site→Features model.
+ci/duplicate-overrides.json. Features WITHIN one object are exempt by design —
+that is the point of the Object→Features model.
 """
 from __future__ import annotations
 
@@ -20,20 +20,20 @@ def check(ctx: GateContext) -> Report:
     override_pairs = {frozenset((p.get("a"), p.get("b"))) for p in overrides}
 
     changed_ids = {ctx.path_id(p) for p in ctx.changed}
-    sites = []
-    for path in ctx.all_site_files():
+    objects = []
+    for path in ctx.all_object_files():
         try:
             doc = ctx.load(path)
         except Exception:
             continue  # unparsable files are the validator step's finding
         pos = primary_position(doc)
         if pos:
-            sites.append((ctx.path_id(path), doc, pos))
+            objects.append((ctx.path_id(path), doc, pos))
 
-    for pid, doc, (lat, lon) in sites:
+    for pid, doc, (lat, lon) in objects:
         if pid not in changed_ids:
             continue
-        for other_pid, other_doc, (olat, olon) in sites:
+        for other_pid, other_doc, (olat, olon) in objects:
             if other_pid == pid:
                 continue
             d = haversine_m(lat, lon, olat, olon)
@@ -43,10 +43,10 @@ def check(ctx: GateContext) -> Report:
                 continue
             r.fail(
                 "OE-R11",
-                f"site '{pid}' is {d:.0f} m from site '{other_pid}' (< {radius} m). "
-                f"Attach as a feature of the existing site, add an explicit sameAs link, "
+                f"object '{pid}' is {d:.0f} m from object '{other_pid}' (< {radius} m). "
+                f"Attach as a feature of the existing object, add an explicit sameAs link, "
                 f"or get a maintainer override.",
-                f"sites/{pid}",
+                f"objects/{pid}",
             )
     return r
 

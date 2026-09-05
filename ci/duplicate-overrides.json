@@ -1,4 +1,4 @@
 {
-  "_comment": "Maintainer overrides for the 50 m duplicate gate (rule OE-R11): pairs of site ids allowed to coexist closer than the radius, each with a reason. Empty at launch.",
+  "_comment": "Maintainer overrides for the 50 m duplicate gate (rule OE-R11): pairs of object ids allowed to coexist closer than the radius, each with a reason. Empty at launch.",
   "pairs": []
 }

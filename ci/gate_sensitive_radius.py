@@ -1,4 +1,4 @@
-"""Sensitivity tripwire — a new site near a known sensitive zone is blocked
+"""Sensitivity tripwire — a new object near a known sensitive zone is blocked
 pending manual review (SENSITIVE-EXITS.md). The zone list in the public repo
 is synthetic/empty; a real list is operator-maintained.
 """
@@ -32,9 +32,9 @@ def check(ctx: GateContext) -> Report:
             if d < zr:
                 r.fail(
                     "OE-SENSITIVE",
-                    f"site '{pid}' is {d:.0f} m from sensitive zone "
+                    f"object '{pid}' is {d:.0f} m from sensitive zone "
                     f"'{zone.get('name', '?')}' (< {zr} m) — needs-sensitivity-review; "
                     f"see SENSITIVE-EXITS.md before this goes any further",
-                    f"sites/{pid}",
+                    f"objects/{pid}",
                 )
     return r

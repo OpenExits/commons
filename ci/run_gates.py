@@ -4,8 +4,8 @@ The local publisher bot and the GitHub Actions workflow both call exactly this
 script, so a change is gated identically everywhere.
 
 Usage:
-    python ci/run_gates.py                                # all sites, all gates
-    python ci/run_gates.py --changed sites/fr/x.json      # a specific change-set
+    python ci/run_gates.py                                # all objects, all gates
+    python ci/run_gates.py --changed objects/fr/x.json    # a specific change-set
     python ci/run_gates.py --base origin/main             # changed = git diff vs ref
     python ci/run_gates.py --check-build-fresh            # also demand committed build/ is current
 
@@ -54,7 +54,7 @@ def check(label: str, report: Report) -> None:
 
 def changed_from_git(repo: Path, base: str) -> list[Path]:
     proc = subprocess.run(
-        ["git", "-C", str(repo), "diff", "--name-only", base, "--", "sites"],
+        ["git", "-C", str(repo), "diff", "--name-only", base, "--", "objects"],
         capture_output=True, encoding="utf-8", check=True,
     )
     return [repo / line for line in proc.stdout.splitlines()
@@ -67,7 +67,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--repo", default=str(Path(__file__).resolve().parents[1]))
     parser.add_argument("--changed", nargs="*", default=None,
-                        help="changed site files (paths relative to repo or absolute)")
+                        help="changed object files (paths relative to repo or absolute)")
     parser.add_argument("--base", default=None,
                         help="git ref for provenance/volume diffing (e.g. origin/main)")
     parser.add_argument("--check-build-fresh", action="store_true")
@@ -79,19 +79,19 @@ def main() -> int:
     elif args.base:
         changed = changed_from_git(repo, args.base)
     else:
-        changed = sorted((repo / "sites").rglob("*.json"))
+        changed = sorted((repo / "objects").rglob("*.json"))
 
     ctx = GateContext(repo=repo, changed=changed, base_ref=args.base, config=load_config(repo))
 
-    print(f"== OpenExits Commons gates == ({len(changed)} changed site file(s))")
+    print(f"== OpenExits Commons gates == ({len(changed)} changed object file(s))")
 
     print("\n1. Schema + normative rules (openexits-validator)")
     for path in changed:
         check(f"validate {ctx.path_id(path)}", validate_file(path))
     if not changed:
-        print("  (no changed site files)")
+        print("  (no changed object files)")
 
-    print("\n2. Duplicate radius (OE-R11, site-level)")
+    print("\n2. Duplicate radius (OE-R11, object-level)")
     check("duplicate radius", gate_duplicate_radius.check(ctx))
 
     print("\n3. Provenance append-only (OE-R07)")

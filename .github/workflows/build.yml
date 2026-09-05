@@ -8,7 +8,7 @@ name: build
 on:
   push:
     branches: [main]
-    paths: ["sites/**", "routes/**", "scripts/**", "ci/**"]
+    paths: ["objects/**", "routes/**", "scripts/**", "ci/**"]
   workflow_dispatch: {}
 jobs:
   build:

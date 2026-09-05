@@ -11,15 +11,15 @@ from openexits_validator.normalize import read_json
 @dataclass
 class GateContext:
     repo: Path                      # commons repo root
-    changed: list[Path]             # changed site files (absolute paths)
+    changed: list[Path]             # changed object files (absolute paths)
     base_ref: str | None = None     # git ref to diff provenance against (e.g. origin/main)
     config: dict = field(default_factory=dict)
 
     def path_id(self, path: Path) -> str:
-        return path.relative_to(self.repo / "sites").with_suffix("").as_posix()
+        return path.relative_to(self.repo / "objects").with_suffix("").as_posix()
 
-    def all_site_files(self) -> list[Path]:
-        return sorted((self.repo / "sites").rglob("*.json"))
+    def all_object_files(self) -> list[Path]:
+        return sorted((self.repo / "objects").rglob("*.json"))
 
     def load(self, path: Path) -> dict:
         return read_json(path)

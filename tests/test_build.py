@@ -6,7 +6,7 @@ import csv
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
-from conftest import make_repo, make_site
+from conftest import make_repo, make_object
 
 from build_artifacts import build, read_gpx_track
 from openexits_validator.normalize import canonical_dumps
@@ -23,23 +23,23 @@ GPX = """<?xml version='1.0' encoding='utf-8'?>
 
 
 def _repo_with_everything(root: Path) -> Path:
-    site = make_site("Roc de l'Éventail", 45.891234, 6.503456)
-    site["region"] = "Massif des Ardines"
-    site["features"].append({
+    obj = make_object("Roc de l'Éventail", 45.891234, 6.503456)
+    obj["region"] = "Massif des Ardines"
+    obj["features"].append({
         "role": "landing",
         "name": "Pré Carré",
         "surface": "grass",
         "position": {"lat": 45.885100, "lon": 6.507800, "elevationM": 900},
     })
-    site["features"][0]["measurements"] = {
+    obj["features"][0]["measurements"] = {
         "rockdrop": {"valueM": 180, "method": "laser", "measuredAt": "2026-06-01"},
     }
-    site["media"] = [{
+    obj["media"] = [{
         "role": "topo", "sha256": "b" * 64, "licence": "CC-BY-SA-4.0",
         "contributor": "test_synthetic", "urls": [],
     }]
-    site["routes"] = [{"type": "approach", "file": "routes/fr/roc-de-l-eventail-approach.gpx"}]
-    make_repo(root, {"fr/roc-de-l-eventail": site})
+    obj["routes"] = [{"type": "approach", "file": "routes/fr/roc-de-l-eventail-approach.gpx"}]
+    make_repo(root, {"fr/roc-de-l-eventail": obj})
     gpx_path = root / "routes" / "fr" / "roc-de-l-eventail-approach.gpx"
     gpx_path.parent.mkdir(parents=True, exist_ok=True)
     gpx_path.write_text(GPX, encoding="utf-8", newline="\n")
@@ -52,35 +52,35 @@ def test_build_is_deterministic(repo: Path):
     build(repo, out1)
     build(repo, out2)
     files = sorted(p.name for p in out1.iterdir())
-    assert files == ["features.geojson", "media-index.json", "routes.geojson", "sites.csv", "sites.geojson"]
+    assert files == ["features.geojson", "media-index.json", "objects.csv", "objects.geojson", "routes.geojson"]
     for name in files:
         assert (out1 / name).read_bytes() == (out2 / name).read_bytes(), f"{name} not deterministic"
 
 
 def test_geojson_lonlat_order_and_roundtrip(repo: Path):
-    """Item 7: coordinates are [lon, lat] — a transposition of this site's
+    """Item 7: coordinates are [lon, lat] — a transposition of this object's
     coordinates would land at lat 6.5 (a different hemisphere of the world).
     Item 5: every Core scalar survives into the artifact byte-exact."""
     _repo_with_everything(repo)
     out = repo.parent / "out"
     build(repo, out)
 
-    sites = json.loads((out / "sites.geojson").read_text(encoding="utf-8"))
-    assert sites["attribution"].startswith("© OpenExits contributors")
-    feat = sites["features"][0]
+    objects = json.loads((out / "objects.geojson").read_text(encoding="utf-8"))
+    assert objects["attribution"].startswith("© OpenExits contributors")
+    feat = objects["features"][0]
     lon, lat = feat["geometry"]["coordinates"]
     assert 6.4 < lon < 6.6 and 45.8 < lat < 46.0, f"lon/lat transposed? got [{lon}, {lat}]"
 
-    src = json.loads((repo / "sites" / "fr" / "roc-de-l-eventail.json").read_text(encoding="utf-8"))
+    src = json.loads((repo / "objects" / "fr" / "roc-de-l-eventail.json").read_text(encoding="utf-8"))
     props = feat["properties"]
-    extracted = {k: props[k] for k in ("id", "name", "country", "region", "status", "access", "sensitivity", "updatedAt")}
+    extracted = {k: props[k] for k in ("id", "name", "country", "region", "status", "access", "sensitivity", "objectType", "updatedAt")}
     expected = {k: src[k] for k in extracted}
     assert canonical_dumps(extracted) == canonical_dumps(expected)
     assert props["exits"] == 1 and props["landings"] == 1
 
-    with open(out / "sites.csv", encoding="utf-8", newline="") as f:
+    with open(out / "objects.csv", encoding="utf-8", newline="") as f:
         row = next(csv.DictReader(f))
-    for k in ("id", "name", "country", "status", "access", "sensitivity", "updatedAt"):
+    for k in ("id", "name", "country", "status", "access", "sensitivity", "objectType", "updatedAt"):
         assert row[k] == str(src[k])
 
 
@@ -90,6 +90,8 @@ def test_features_geojson_flattens_measurements(repo: Path):
     build(repo, out)
     features = json.loads((out / "features.geojson").read_text(encoding="utf-8"))["features"]
     exit_feat = next(f for f in features if f["properties"]["role"] == "exit")
+    assert exit_feat["properties"]["objectType"] == "earth"  # inherited from the object
+    assert exit_feat["properties"]["objectPath"] == "fr/roc-de-l-eventail"
     assert exit_feat["properties"]["rockdropM"] == 180
     assert exit_feat["properties"]["rockdropMeasuredAt"] == "2026-06-01"
     landing = next(f for f in features if f["properties"]["role"] == "landing")
@@ -118,4 +120,4 @@ def test_media_index(repo: Path):
     idx = json.loads((out / "media-index.json").read_text(encoding="utf-8"))
     assert idx["media"][0]["sha256"] == "b" * 64
     assert idx["media"][0]["licence"] == "CC-BY-SA-4.0"
-    assert idx["media"][0]["site"] == "fr/roc-de-l-eventail"
+    assert idx["media"][0]["object"] == "fr/roc-de-l-eventail"

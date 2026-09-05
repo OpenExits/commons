@@ -1,4 +1,4 @@
-"""Deterministic build: sites/**.json -> build/ artifacts.
+"""Deterministic build: objects/**.json -> build/ artifacts.
 
 Same input tree => byte-identical output, always:
 - inputs read in sorted order, no timestamps embedded, canonical writers only
@@ -24,19 +24,19 @@ ATTRIBUTION = "© OpenExits contributors, ODbL 1.0 — https://opendatacommons.o
 
 CSV_COLUMNS = [
     "id", "path", "name", "country", "region", "city", "status", "access",
-    "sensitivity", "lat", "lon", "exits", "landings", "updatedAt",
+    "sensitivity", "objectType", "lat", "lon", "exits", "landings", "updatedAt",
 ]
 
 GPX_NS = "{http://www.topografix.com/GPX/1/1}"
 
 
-def iter_site_files(repo: Path) -> list[Path]:
-    return sorted((repo / "sites").rglob("*.json"))
+def iter_object_files(repo: Path) -> list[Path]:
+    return sorted((repo / "objects").rglob("*.json"))
 
 
-def site_path_id(repo: Path, path: Path) -> str:
+def object_path_id(repo: Path, path: Path) -> str:
     """'<country>/<slug>' — the stable file identity used in artifacts."""
-    rel = path.relative_to(repo / "sites")
+    rel = path.relative_to(repo / "objects")
     return rel.with_suffix("").as_posix()
 
 
@@ -49,7 +49,7 @@ def centroid(doc: dict) -> tuple[float, float]:
         and "lat" in f["position"] and "lon" in f["position"]
     ]
     if not pts:
-        raise ValueError(f"site {doc.get('id')} has no positioned features")
+        raise ValueError(f"object {doc.get('id')} has no positioned features")
     lon = round(sum(p[0] for p in pts) / len(pts), 6)
     lat = round(sum(p[1] for p in pts) / len(pts), 6)
     return lon, lat
@@ -67,7 +67,7 @@ def write_geojson(path: Path, features: list[dict]) -> None:
         f.write(" ]\n}\n")
 
 
-def site_feature(doc: dict, path_id: str) -> dict:
+def object_feature(doc: dict, path_id: str) -> dict:
     lon, lat = centroid(doc)
     roles = [f.get("role") for f in doc.get("features", []) if isinstance(f, dict)]
     props = {
@@ -82,7 +82,7 @@ def site_feature(doc: dict, path_id: str) -> dict:
         "landings": roles.count("landing"),
         "updatedAt": doc["updatedAt"],
     }
-    for opt in ("region", "city"):
+    for opt in ("objectType", "region", "city"):
         if doc.get(opt):
             props[opt] = doc[opt]
     return {"type": "Feature", "geometry": {"type": "Point", "coordinates": [lon, lat]}, "properties": props}
@@ -93,13 +93,15 @@ def feature_features(doc: dict, path_id: str) -> list[dict]:
     for idx, feat in enumerate(doc.get("features", [])):
         pos = feat.get("position", {})
         props = {
-            "siteId": doc["id"],
-            "sitePath": path_id,
-            "siteName": doc["name"],
+            "objectId": doc["id"],
+            "objectPath": path_id,
+            "objectName": doc["name"],
             "featureIndex": idx,
             "role": feat.get("role"),
         }
-        for opt in ("name", "objectType", "exitDirectionDeg", "approachTimeMin", "surface"):
+        if doc.get("objectType"):
+            props["objectType"] = doc["objectType"]
+        for opt in ("name", "exitDirectionDeg", "approachTimeMin", "surface"):
             if feat.get(opt) is not None:
                 props[opt] = feat[opt]
         for opt in ("elevationM", "precisionM", "pinConfirmed"):
@@ -130,8 +132,8 @@ def route_features(repo: Path, doc: dict, path_id: str) -> list[dict]:
             "type": "Feature",
             "geometry": {"type": "LineString", "coordinates": coords},
             "properties": {
-                "siteId": doc["id"],
-                "sitePath": path_id,
+                "objectId": doc["id"],
+                "objectPath": path_id,
                 "type": route.get("type"),
                 "featureRef": route.get("featureRef"),
                 "file": route.get("file"),
@@ -155,8 +157,8 @@ def media_index(docs: list[tuple[str, dict]]) -> list[dict]:
         for m in doc.get("media", []):
             entries.append({
                 "sha256": m.get("sha256"),
-                "site": path_id,
-                "siteId": doc["id"],
+                "object": path_id,
+                "objectId": doc["id"],
                 "role": m.get("role"),
                 "featureRef": m.get("featureRef"),
                 "licence": m.get("licence"),
@@ -164,15 +166,15 @@ def media_index(docs: list[tuple[str, dict]]) -> list[dict]:
                 "caption": m.get("caption"),
                 "urls": m.get("urls", []),
             })
-    entries.sort(key=lambda e: (e["site"], e["sha256"] or ""))
+    entries.sort(key=lambda e: (e["object"], e["sha256"] or ""))
     return entries
 
 
 def build(repo: Path, out: Path) -> int:
-    files = iter_site_files(repo)
-    docs = [(site_path_id(repo, p), read_json(p)) for p in files]
+    files = iter_object_files(repo)
+    docs = [(object_path_id(repo, p), read_json(p)) for p in files]
 
-    write_geojson(out / "sites.geojson", [site_feature(d, pid) for pid, d in docs])
+    write_geojson(out / "objects.geojson", [object_feature(d, pid) for pid, d in docs])
     write_geojson(out / "features.geojson",
                   [f for pid, d in docs for f in feature_features(d, pid)])
     write_geojson(out / "routes.geojson",
@@ -181,7 +183,7 @@ def build(repo: Path, out: Path) -> int:
                {"attribution": ATTRIBUTION, "media": media_index(docs)})
 
     out.mkdir(parents=True, exist_ok=True)
-    with open(out / "sites.csv", "w", encoding="utf-8", newline="") as f:
+    with open(out / "objects.csv", "w", encoding="utf-8", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=CSV_COLUMNS)
         writer.writeheader()
         for pid, doc in docs:
@@ -192,6 +194,7 @@ def build(repo: Path, out: Path) -> int:
                 "country": doc["country"], "region": doc.get("region", ""),
                 "city": doc.get("city", ""), "status": doc["status"],
                 "access": doc["access"], "sensitivity": doc["sensitivity"],
+                "objectType": doc.get("objectType", ""),
                 "lat": lat, "lon": lon,
                 "exits": roles.count("exit"), "landings": roles.count("landing"),
                 "updatedAt": doc["updatedAt"],
@@ -209,7 +212,7 @@ def main() -> int:
     repo = Path(args.repo).resolve()
     out = Path(args.out).resolve() if args.out else repo / "build"
     n = build(repo, out)
-    print(f"built {n} site(s) -> {out}")
+    print(f"built {n} object(s) -> {out}")
     return 0
 
 

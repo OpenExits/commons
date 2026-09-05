@@ -37,8 +37,8 @@ Everything below is ready in the repos and waits only on hosting.
    reference datasets, then `python scripts/clean_hands_audit.py --strings <local-file>` on
    every repo, history included. Zero hits required. **Blocks everything else.**
 2. Create the `openexits` org; push `specification`, `commons`, `web`.
-3. Tag `specification` `v2.0.0`; switch `commons/ci/requirements.txt` from the local editable
-   install to the pinned git tag.
+3. Tag `specification` (v2.0.x, done); keep `commons/ci/requirements.txt` on a pinned git tag,
+   never the local editable install.
 4. Enable the workflows (already written, inert): `validate.yml` on PRs, `build.yml`
    post-merge, `mirror.yml` (create empty Codeberg/GitLab mirrors + tokens), `release.yml` on
    `data/*` tags. Set the bot's real email in `build.yml` and `publisher.py`.

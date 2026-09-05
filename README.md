@@ -1,8 +1,8 @@
 # OpenExits Commons
 
-The community-owned database of BASE exit sites, in the
-[OpenExits Specification](../specification/) format. One JSON file per site under
-`sites/<country>/<slug>.json`; deterministic build artifacts under `build/`.
+The community-owned database of BASE objects and their exits, in the
+[OpenExits Specification](../specification/) format. One JSON file per object under
+`objects/<country>/<slug>.json`; deterministic build artifacts under `build/`.
 
 **Licence:** database ODbL 1.0, contents DbCL 1.0 (see [LICENSE](LICENSE)).
 **Attribution:** "© OpenExits contributors, ODbL".

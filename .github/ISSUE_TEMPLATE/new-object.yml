@@ -1,7 +1,7 @@
-name: New site
-description: Add a BASE exit site to the OpenExits Commons without touching git
-title: "[site] "
-labels: ["new-site", "needs-review"]
+name: New object
+description: Add a BASE object and its exit(s) to the OpenExits Commons without touching git
+title: "[object] "
+labels: ["new-object", "needs-review"]
 body:
   - type: markdown
     attributes:
@@ -10,14 +10,14 @@ body:
         **Do not submit access-restricted or landowner-sensitive exits.** An issue is
         public and permanent even if closed — see
         [SENSITIVE-EXITS.md](../blob/main/SENSITIVE-EXITS.md). The public Commons holds
-        openly-known sites only.
+        openly-known objects only.
 
         All measurements in **metres**, directions in **degrees true**.
   - type: input
     id: name
     attributes:
-      label: Site name
-      description: The object (the cliff, the bridge), not one exit
+      label: Object name
+      description: The object itself (the cliff, the bridge, the antenna, the building), not one exit
     validations:
       required: true
   - type: input
@@ -36,7 +36,7 @@ body:
   - type: dropdown
     id: objectType
     attributes:
-      label: Object type
+      label: Object type (the B.A.S.E. category of the object)
       options: [earth, building, antenna, span]
     validations:
       required: true
@@ -91,5 +91,5 @@ body:
             ODbL 1.0 (contents under DbCL 1.0), or under another free and open licence
             approved by a two-thirds vote of active contributors.
           required: true
-        - label: This site is openly known — not access-restricted or landowner-sensitive.
+        - label: This object is openly known — not access-restricted or landowner-sensitive.
           required: true

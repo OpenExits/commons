@@ -3,7 +3,7 @@
 > ## ⚠ Before anything else: sensitive exits
 > **Do not submit access-restricted or landowner-sensitive exits.** A pull request or
 > issue leaks its content permanently even if rejected — closed PRs stay publicly
-> readable. The public Commons holds `public` sites only. Read
+> readable. The public Commons holds `public` objects only. Read
 > [SENSITIVE-EXITS.md](SENSITIVE-EXITS.md) first; when in doubt, don't submit.
 
 ## The Contributor Terms
@@ -40,26 +40,26 @@ Photographs and other media additionally carry a per-file licence: **CC-BY-SA 4.
 1. **The panel** *(recommended — coming with the OpenExits website)*: drop a pin on the
    map, answer a short wizard, done. Machine-validated instantly, human-reviewed before
    publication, converted to standard JSON and committed with your credit by the bot.
-2. **Issue form**: open a [new-site issue](.github/ISSUE_TEMPLATE/new-site.yml)-based
+2. **Issue form**: open a [new-object issue](.github/ISSUE_TEMPLATE/new-object.yml)-based
    issue — structured fields, no git knowledge needed.
 3. **Pull request** (for the technical): fork, add or edit one file under
-   `sites/<country>/<slug>.json` conforming to the
+   `objects/<country>/<slug>.json` conforming to the
    [OpenExits Specification](https://github.com/openexits/specification), and open a PR.
-   Run `python ci/run_gates.py --changed sites/<country>/<slug>.json` locally first —
+   Run `python ci/run_gates.py --changed objects/<country>/<slug>.json` locally first —
    CI runs exactly that script.
 4. **Bulk import by a platform** *(coming soon — specified, not yet built)*: a documented
    CLI a platform operator runs **against their own data** to emit conforming documents
    and open a PR. A platform contributes its own data by its own hand; we ship the tool,
    never the data.
 
-**Corrections** are contributions too: any route may edit an existing site. Every
+**Corrections** are contributions too: any route may edit an existing object. Every
 correction **appends** a provenance entry — prior credit is never erased, and CI rejects
 any change that modifies existing provenance history.
 
 ## What CI enforces (nothing merges without it)
 
-Schema + normative rules (`openexits-validator`), site-level duplicate radius (50 m;
-features within one site exempt), provenance append-only, sensitive-zone check, the
+Schema + normative rules (`openexits-validator`), object-level duplicate radius (50 m;
+features within one object exempt), provenance append-only, sensitive-zone check, the
 bulk-submission tripwire (volume + textual similarity), route geometry sanity, and a
 deterministic build. Provenance is **system-generated** — hand-written provenance is
 overwritten with values derived from the actual submission route, author and merge date.
@@ -67,5 +67,5 @@ overwritten with values derived from the actual submission route, author and mer
 ## Ground rules
 
 - Synthetic test data only in fixtures and examples; never a real coordinate in docs.
-- One site per file, one site per PR unless you have a very good reason.
+- One object per file, one object per PR unless you have a very good reason.
 - Everything you write may be published under ODbL forever. Write accordingly.

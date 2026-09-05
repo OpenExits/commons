@@ -22,10 +22,10 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            build/sites.geojson
+            build/objects.geojson
             build/features.geojson
             build/routes.geojson
-            build/sites.csv
+            build/objects.csv
             build/media-index.json
       - name: OpenTimestamps proof of the release commit
         run: |

@@ -1,8 +1,8 @@
 """Bulk-submission tripwire.
 
 Two triggers, either blocks pending manual provenance review:
-- VOLUME: more than maxNewSitesPerChange new sites in one change-set;
-- SIMILARITY: guide prose in a changed site shares >= tripwireMinShingleMatches
+- VOLUME: more than maxNewObjectsPerChange new objects in one change-set;
+- SIMILARITY: guide prose in a changed object shares >= tripwireMinShingleMatches
   word-shingles with the fingerprinted corpus (ci/corpus-fingerprint.json —
   hashes only, never source text; the shipped fingerprint is SYNTHETIC).
 
@@ -25,17 +25,17 @@ from fingerprint_corpus import shingle_hashes  # noqa: E402
 
 def check(ctx: GateContext) -> Report:
     r = Report()
-    max_new = ctx.config.get("maxNewSitesPerChange", 10)
+    max_new = ctx.config.get("maxNewObjectsPerChange", 10)
     min_matches = ctx.config.get("tripwireMinShingleMatches", 3)
 
-    new_sites = []
+    new_objects = []
     for path in ctx.changed:
         if ctx.base_ref is None or ctx.git_show(ctx.base_ref, path) is None:
-            new_sites.append(ctx.path_id(path))
-    if ctx.base_ref is not None and len(new_sites) > max_new:
+            new_objects.append(ctx.path_id(path))
+    if ctx.base_ref is not None and len(new_objects) > max_new:
         r.fail(
             "OE-TRIPWIRE",
-            f"{len(new_sites)} new sites in one change-set (> {max_new}) — "
+            f"{len(new_objects)} new objects in one change-set (> {max_new}) — "
             f"needs-provenance-review: bulk imports go through the documented "
             f"bulk-import route with platform consent, never a mass PR",
         )
@@ -70,6 +70,6 @@ def check(ctx: GateContext) -> Report:
                 "OE-TRIPWIRE",
                 f"guide prose of '{pid}' shares {matches} shingles with a known "
                 f"third-party corpus (>= {min_matches}) — needs-provenance-review",
-                f"sites/{pid}/guide",
+                f"objects/{pid}/guide",
             )
     return r

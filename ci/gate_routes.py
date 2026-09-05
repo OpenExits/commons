@@ -1,9 +1,9 @@
 """Route geometry sanity.
 
-Every GPX referenced by a changed site: >= 2 track points, total length under
+Every GPX referenced by a changed object: >= 2 track points, total length under
 maxRouteKm (50 km — derived empirically: a corrupt real-world track once
 computed to 17,229 km), and at least one endpoint within routeEndpointMaxKm of
-the site.
+the object.
 """
 from __future__ import annotations
 
@@ -30,11 +30,11 @@ def check(ctx: GateContext) -> Report:
             doc = ctx.load(path)
         except Exception:
             continue
-        site_pos = primary_position(doc)
+        obj_pos = primary_position(doc)
         for route in doc.get("routes", []):
             file_ref = route.get("file", "")
             gpx = ctx.repo / file_ref
-            where = f"sites/{pid}/routes"
+            where = f"objects/{pid}/routes"
             if not gpx.exists():
                 r.fail("OE-ROUTE", f"route file '{file_ref}' referenced by '{pid}' does not exist", where)
                 continue
@@ -56,8 +56,8 @@ def check(ctx: GateContext) -> Report:
                     f"route '{file_ref}' computes to {length_m / 1000:.0f} km (> {max_km} km) — corrupt track?",
                     where,
                 )
-            if site_pos:
-                lat, lon = site_pos
+            if obj_pos:
+                lat, lon = obj_pos
                 d_ends = min(
                     haversine_m(lat, lon, coords[0][1], coords[0][0]),
                     haversine_m(lat, lon, coords[-1][1], coords[-1][0]),
@@ -65,7 +65,7 @@ def check(ctx: GateContext) -> Report:
                 if d_ends > endpoint_km * 1000:
                     r.fail(
                         "OE-ROUTE",
-                        f"route '{file_ref}': nearest endpoint is {d_ends / 1000:.1f} km from the site (> {endpoint_km} km)",
+                        f"route '{file_ref}': nearest endpoint is {d_ends / 1000:.1f} km from the object (> {endpoint_km} km)",
                         where,
                     )
     return r

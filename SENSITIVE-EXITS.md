@@ -7,7 +7,7 @@ can truly remove them. So this policy lives **before** submission, not in review
 
 ## Vocabulary (from the OpenExits Specification, rule OE-R08)
 
-- `public` — the site is openly known and publishable. **The only level this Commons
+- `public` — the object is openly known and publishable. **The only level this Commons
   ever holds.**
 - `sensitive` — locally known, publicising it would create access or landowner problems.
   Exists for *private* datasets using the standard internally. Never submitted here.
@@ -20,7 +20,7 @@ conforming implementations — and this community enforces it socially.
 
 ## Before you submit, ask
 
-1. Would the local jumpers object to this site being on a public map?
+1. Would the local jumpers want this object kept off a public map?
 2. Is access tolerated only because it is discreet?
 3. Is there a landowner, land manager, or seasonal wildlife closure involved that a
    public listing would inflame?
@@ -29,7 +29,7 @@ conforming implementations — and this community enforces it socially.
 
 ## Automatic checks
 
-CI blocks any new site within a configured radius of a known sensitive zone
+CI blocks any new object within a configured radius of a known sensitive zone
 (`ci/sensitive-zones.json` — kept empty/synthetic in the public repo; operators maintain
 a real list locally) pending manual review. The panel shows this warning before the
 submission wizard opens. These are tripwires, not the policy — the policy is you.
@@ -38,8 +38,8 @@ submission wizard opens. These are tripwires, not the policy — the policy is y
 
 1. **Immediately** email **security@openexits.org** — the private channel, so the report
    itself does not publish what you are trying to unpublish. Name the file, PR or commit
-   only; do not describe the site. If email is not available to you, open an issue titled
-   "scrub request" with NO details of the site in the body — the PR/commit reference and
+   only; do not describe the object. If email is not available to you, open an issue titled
+   "scrub request" with NO details of the object in the body — the PR/commit reference and
    nothing else. See [SECURITY.md](SECURITY.md).
 2. A maintainer removes the record with a revert commit and, where history rewriting is
    warranted, contacts the hosting platform's support to purge unreachable commits and

@@ -5,5 +5,5 @@
 #
 # Local development installs the editable package instead:
 #   pip install -e ../specification/tools
-openexits-validator @ git+https://github.com/OpenExits/specification@v2.0.1#subdirectory=tools
+openexits-validator @ git+https://github.com/OpenExits/specification@v2.0.2#subdirectory=tools
 jsonschema>=4.21

@@ -1,6 +1,6 @@
 """Shared fixtures for the commons gate/build tests.
 
-Everything here is SYNTHETIC: invented sites at invented coordinates,
+Everything here is SYNTHETIC: invented objects at invented coordinates,
 invented prose. Tests build small throwaway commons repos under tmp_path.
 """
 from __future__ import annotations
@@ -20,7 +20,7 @@ from openexits_validator.normalize import write_json  # noqa: E402
 CONFIG = {
     "duplicateRadiusM": 50,
     "sensitiveRadiusM": 500,
-    "maxNewSitesPerChange": 10,
+    "maxNewObjectsPerChange": 10,
     "tripwireMinShingleMatches": 3,
     "maxRouteKm": 50,
     "routeEndpointMaxKm": 10,
@@ -43,16 +43,17 @@ def _ulid_gen():
 _ULIDS = _ulid_gen()
 
 
-def make_site(name: str, lat: float, lon: float, *, country: str = "FR",
-              site_id: str | None = None, **extra) -> dict:
+def make_object(name: str, lat: float, lon: float, *, country: str = "FR",
+                object_id: str | None = None, **extra) -> dict:
     doc = {
         "schemaVersion": "2.0",
-        "id": site_id or next(_ULIDS),
+        "id": object_id or next(_ULIDS),
         "name": name,
         "country": country,
         "status": "open",
         "access": "unknown",
         "sensitivity": "public",
+        "objectType": "earth",
         "provenance": [
             {"source": "panel", "contributor": "test_synthetic",
              "contributedAt": "2026-08-27", "licence": "ODbL-1.0"}
@@ -62,7 +63,6 @@ def make_site(name: str, lat: float, lon: float, *, country: str = "FR",
             {
                 "role": "exit",
                 "position": {"lat": lat, "lon": lon, "elevationM": 1500, "precisionM": 10},
-                "objectType": "earth",
                 "suitability": {"sliderOff": True},
                 "exitDirectionDeg": 180,
             }
@@ -72,12 +72,12 @@ def make_site(name: str, lat: float, lon: float, *, country: str = "FR",
     return doc
 
 
-def make_repo(root: Path, sites: dict[str, dict], *, zones: list | None = None,
+def make_repo(root: Path, objects: dict[str, dict], *, zones: list | None = None,
               fingerprint: dict | None = None, overrides: list | None = None) -> Path:
-    """Write a minimal commons repo: sites/ + the ci/ config files gates read."""
-    for path_id, doc in sites.items():
-        write_json(root / "sites" / f"{path_id}.json", doc)
-    (root / "sites").mkdir(exist_ok=True)
+    """Write a minimal commons repo: objects/ + the ci/ config files gates read."""
+    for path_id, doc in objects.items():
+        write_json(root / "objects" / f"{path_id}.json", doc)
+    (root / "objects").mkdir(exist_ok=True)
     write_json(root / "ci" / "gates-config.json", CONFIG)
     write_json(root / "ci" / "duplicate-overrides.json", {"pairs": overrides or []})
     write_json(root / "ci" / "sensitive-zones.json", {"zones": zones or []})

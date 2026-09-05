@@ -1,4 +1,4 @@
 {
-  "_comment": "Zones near which a new site is blocked pending manual sensitivity review (SENSITIVE-EXITS.md). SYNTHETIC entries only in the public repo; a real list is operator-maintained. Empty at launch.",
+  "_comment": "Zones near which a new object is blocked pending manual sensitivity review (SENSITIVE-EXITS.md). SYNTHETIC entries only in the public repo; a real list is operator-maintained. Empty at launch.",
   "zones": []
 }

@@ -9,15 +9,15 @@ urgent of the two.
 
 This is the highest-stakes failure this project can have, and it is time-critical: content
 in a public repository is reachable even after deletion, and only GitHub support can purge
-it fully. If a site is on the public map that should not be — a discreetly-tolerated access,
+it fully. If an object is on the public map that should not be — a discreetly-tolerated access,
 a landowner problem, a seasonal wildlife closure — report it immediately.
 
-**Email security@openexits.org. Do not open a public issue, and do not include the site's
+**Email security@openexits.org. Do not open a public issue, and do not include the object's
 details in any public channel.** Name the file, pull request or commit only. Describing the
 problem publicly is the thing we are trying to undo.
 
 If email is not available to you, open an issue titled `scrub request` containing **no
-details of the site** — the PR or commit reference and nothing else. A maintainer will take
+details of the object** — the PR or commit reference and nothing else. A maintainer will take
 it from there.
 
 What happens next is documented in full in [SENSITIVE-EXITS.md](SENSITIVE-EXITS.md): revert,
@@ -25,7 +25,7 @@ history purge where warranted, sensitive-zone list updated so CI catches the are
 mirrors and releases corrected, and the contributor told what happened without blame.
 
 You do not need to be the contributor, a maintainer, or a member of this community to report
-this. If you are a local jumper who thinks a site should not be listed, that is exactly the
+this. If you are a local jumper who thinks an object should not be listed, that is exactly the
 report we want.
 
 ## 2. A software vulnerability
@@ -33,7 +33,7 @@ report we want.
 The reference validator, the CI gates and the contribution panel are ordinary software and
 can have ordinary vulnerabilities. Of particular interest:
 
-- anything letting a contributor write outside `sites/` or `routes/` through the publisher,
+- anything letting a contributor write outside `objects/` or `routes/` through the publisher,
 - anything bypassing the CI gates or the provenance stamping,
 - anything exposing the panel's accounts, unpublished media, or terms-acceptance records.
 

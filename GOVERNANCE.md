@@ -49,10 +49,10 @@ two-thirds vote of active contributors — not a board decision, and not a found
 
 Review in OpenExits is a **conformance check, not a verification**. A reviewer confirms that
 a submission is well-formed, internally consistent, plausibly offered in good faith, and not
-obviously sensitive. A reviewer does **not** confirm that a site is safe, that a measurement
+obviously sensitive. A reviewer does **not** confirm that an object is safe, that a measurement
 is accurate, that an access is lawful, or that anyone should jump it.
 
-Nobody acting for OpenExits visits sites, measures anything, or checks a record against
+Nobody acting for OpenExits visits objects, measures anything, or checks a record against
 reality. **That verification is the jumper's own, and it is not delegable.** A published
 record means "this submission conforms to the standard and passed the gates" and carries no
 further assertion of any kind.
@@ -72,7 +72,7 @@ here so that no role anyone actually holds is left undefined.
 
 | Where it lives | Role | Scope |
 |---|---|---|
-| panel | `user` | Submit sites and corrections; edit and withdraw one's own submissions |
+| panel | `user` | Submit objects and corrections; edit and withdraw one's own submissions |
 | panel | `moderator` | Everything a user can do, plus review the queue |
 | panel | `admin` | Everything a moderator can do, plus appoint moderators and administer accounts |
 | project | maintainer | Repository merge rights, gate configuration, releases |
@@ -85,7 +85,7 @@ here so that no role anyone actually holds is left undefined.
   approve, edit-then-approve, reject, or request changes. Appointed by an admin or the
   maintainers; removed the same way, or by the bureau for cause once one exists. A moderator
   is **not** a verifier, an inspector, or a guarantor, and is not expected to have local
-  knowledge of any site they review.
+  knowledge of any object they review.
 - **Admin** (panel role `admin`) — a moderator who can additionally appoint moderators and
   administer accounts. **The admin role carries no additional assertion about data.** An
   admin who approves a submission is doing exactly what a moderator does and is scoped by the

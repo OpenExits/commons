@@ -3,7 +3,7 @@
 BLOCKS PUBLICATION. Run before the repository is first made public and again
 before every release. Two checks:
 
-1. The commons contains no site records at all beyond what is explicitly
+1. The commons contains no object records at all beyond what is explicitly
    allowed (at launch: zero — synthetic fixtures live in the specification
    repo, dev data in a throwaway dev-commons).
 2. Neither the working tree NOR ANY COMMIT IN HISTORY contains any of the
@@ -14,7 +14,7 @@ before every release. Two checks:
 
 Usage:
     python scripts/clean_hands_audit.py [--repo .] [--strings <file>]
-                                        [--allow-sites N]
+                                        [--allow-objects N]
 
 Without --strings only check 1 runs (and says so loudly): a pass without a
 strings sweep is NOT a clean-hands clearance.
@@ -72,19 +72,19 @@ def main() -> int:
     parser.add_argument("--repo", default=".")
     parser.add_argument("--strings", default=None,
                         help="operator-local file of distinctive third-party strings")
-    parser.add_argument("--allow-sites", type=int, default=0,
-                        help="expected number of site files (launch: 0)")
+    parser.add_argument("--allow-objects", type=int, default=0,
+                        help="expected number of object files (launch: 0)")
     args = parser.parse_args()
     repo = Path(args.repo).resolve()
 
     print(f"== clean-hands audit == {repo}")
 
-    print("\n1. Site-record census")
-    site_files = sorted((repo / "sites").rglob("*.json")) if (repo / "sites").exists() else []
+    print("\n1. Object-record census")
+    object_files = sorted((repo / "objects").rglob("*.json")) if (repo / "objects").exists() else []
     check(
-        f"sites/ holds exactly the allowed number of records ({args.allow_sites})",
-        len(site_files) == args.allow_sites,
-        f"found {len(site_files)}" + (f": {[p.name for p in site_files[:5]]}" if site_files else ""),
+        f"objects/ holds exactly the allowed number of records ({args.allow_objects})",
+        len(object_files) == args.allow_objects,
+        f"found {len(object_files)}" + (f": {[p.name for p in object_files[:5]]}" if object_files else ""),
     )
 
     print("\n2. Distinctive-strings sweep (tree + full git history)")
